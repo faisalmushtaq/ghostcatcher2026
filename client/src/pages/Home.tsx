@@ -125,35 +125,62 @@ export default function Home() {
     >
       {/* ===== MENU SCREEN ===== */}
       {gameState === 'menu' && (
-        <div className="flex flex-col items-center gap-4 sm:gap-6 p-4 max-w-lg mx-auto">
-          <img
-            src={ASSETS.logo}
-            alt="Ghost Catcher 2026"
-            className="w-full max-w-[400px]"
-            style={{ imageRendering: 'auto' }}
-          />
-          <img
-            src={ASSETS.splash}
-            alt="Game Preview"
-            className="w-full max-w-[280px] rounded-lg"
-            style={{ border: '3px solid #2121DE' }}
-          />
-          <button
-            onClick={startGame}
-            className="px-8 py-3 sm:px-10 sm:py-4 text-sm sm:text-base tracking-wider transition-all duration-200 hover:scale-105 active:scale-95"
+        <div
+          className="flex flex-col items-center justify-center w-full min-h-[100dvh] p-4"
+          onClick={startGame}
+          style={{ cursor: 'pointer' }}
+        >
+          {/* Title */}
+          <h1
+            className="text-center mb-4 leading-tight"
             style={{
               fontFamily: PIXEL_FONT,
               color: '#FFFF00',
-              backgroundColor: '#000000',
-              border: '3px solid #FFFF00',
-              textShadow: '0 0 10px rgba(255,255,0,0.5)',
+              fontSize: 'clamp(18px, 5vw, 36px)',
+              textShadow: '0 0 20px rgba(255,255,0,0.7), 3px 3px 0px #B8860B',
+              letterSpacing: '0.05em',
             }}
           >
-            START GAME
-          </button>
+            GHOST CATCHER<br />
+            <span style={{ color: '#00FFFF', textShadow: '0 0 20px rgba(0,255,255,0.7), 3px 3px 0px #006666' }}>2026</span>
+          </h1>
+
+          {/* Large splash image */}
+          <img
+            src={ASSETS.splash}
+            alt="Ghost Catcher 2026 - Pac-Man chasing ghosts"
+            className="w-full"
+            style={{
+              maxWidth: 'min(480px, 90vw)',
+              imageRendering: 'pixelated',
+              border: '4px solid #2121DE',
+              boxShadow: '0 0 30px rgba(33,33,222,0.6)',
+            }}
+          />
+
+          {/* TAP TO START - blinking */}
           <p
-            className="text-[10px] sm:text-xs text-center max-w-[280px] leading-relaxed"
-            style={{ fontFamily: PIXEL_FONT, color: '#6666FF' }}
+            className="mt-6 animate-pulse"
+            style={{
+              fontFamily: PIXEL_FONT,
+              color: '#FFFFFF',
+              fontSize: 'clamp(10px, 3vw, 16px)',
+              letterSpacing: '0.1em',
+            }}
+          >
+            TAP TO START
+          </p>
+
+          {/* Controls hint */}
+          <p
+            className="mt-3 text-center"
+            style={{
+              fontFamily: PIXEL_FONT,
+              color: '#6666FF',
+              fontSize: 'clamp(7px, 1.8vw, 10px)',
+              maxWidth: '300px',
+              lineHeight: '1.8',
+            }}
           >
             {isTouchDevice
               ? 'TAP THE MAZE OR USE D-PAD TO CATCH GHOSTS!'

@@ -228,7 +228,7 @@ export const COLORS = {
 // Game artwork (hosted on CDN - these will work from any device)
 export const ASSETS = {
   logo: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663399341951/ez4QLEjQZVxTi27M9HHhtc/gc-logo-Jv8KErrvVSJwhHXx5KS3fn.webp',
-  splash: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663399341951/ez4QLEjQZVxTi27M9HHhtc/gc-splash-fWMyRoWfCuJLFRSxmUVuPQ.webp',
+  splash: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663399341951/ez4QLEjQZVxTi27M9HHhtc/gc-splash-v2-dU2oSBiKbmTf7uSksPALDv.webp',
   rocket: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663399341951/ez4QLEjQZVxTi27M9HHhtc/gc-rocket-9hPnFtU6dHwy69LMKThUCg.webp',
   victory: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663399341951/ez4QLEjQZVxTi27M9HHhtc/gc-victory-FbEAa3kZ7rnsw4aTiK48uq.webp',
 };
