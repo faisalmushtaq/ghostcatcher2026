@@ -1,0 +1,25 @@
+{
+  "name": "Ghost Catcher 2026",
+  "short_name": "GhostCatcher",
+  "description": "Classic arcade game by Mushtaq Arcade Corp. Chase and catch the fleeing ghosts!",
+  "start_url": "/ghostcatcher2026/",
+  "scope": "/ghostcatcher2026/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/ghostcatcher2026/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/ghostcatcher2026/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

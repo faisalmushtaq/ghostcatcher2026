@@ -75,6 +75,11 @@ export function useGameEngine() {
   const [ghostsCaught, setGhostsCaught] = useState(0);
   const [ghostsNeeded, setGhostsNeeded] = useState(0);
   const [rocketProgress, setRocketProgress] = useState(0);
+  // Timer
+  const [levelElapsed, setLevelElapsed] = useState(0);      // seconds elapsed this level
+  const [levelTimes, setLevelTimes] = useState<number[]>([]); // time per completed level
+  const levelStartTimeRef = useRef<number>(0);
+  const levelElapsedRef = useRef<number>(0);
 
   // Mutable refs for game loop
   const mazeRef = useRef<number[][]>([]);
@@ -96,6 +101,7 @@ export function useGameEngine() {
   const gameStateRef = useRef<GameState>('menu');
   const rocketProgressRef = useRef(0);
   const nextGhostSpawnRef = useRef(0);
+  const levelTimesRef = useRef<number[]>([]);
 
   useEffect(() => { gameStateRef.current = gameState; }, [gameState]);
 
@@ -135,6 +141,10 @@ export function useGameEngine() {
     scorePopupsRef.current = [];
     nextGhostSpawnRef.current = 20; // first ghost spawns quickly
     levelRef.current = levelIndex;
+    // Reset timer for this level
+    levelStartTimeRef.current = performance.now();
+    levelElapsedRef.current = 0;
+    setLevelElapsed(0);
 
     const levelDef = LEVELS[levelIndex];
     setCurrentLevel(levelIndex);
@@ -154,6 +164,10 @@ export function useGameEngine() {
     scoreRef.current = 0;
     setScore(0);
     ghostIdCounter = 0;
+    // Clear confetti and level times on restart
+    confettiRef.current = [];
+    levelTimesRef.current = [];
+    setLevelTimes([]);
     startLevel(startLevelIndex);
   }, [startLevel]);
 
@@ -448,6 +462,14 @@ export function useGameEngine() {
       }
     }
 
+    // Update timer display every tick
+    const nowMs = performance.now();
+    const elapsedSec = Math.floor((nowMs - levelStartTimeRef.current) / 1000);
+    if (elapsedSec !== levelElapsedRef.current) {
+      levelElapsedRef.current = elapsedSec;
+      setLevelElapsed(elapsedSec);
+    }
+
     // Check collisions (Pac-Man catches ghost)
     for (const ghost of ghostsRef.current) {
       if (!ghost.alive) continue;
@@ -463,6 +485,18 @@ export function useGameEngine() {
 
         // Check level complete
         if (ghostsCaughtRef.current >= levelDef.ghostCount) {
+          // Record level time
+          const finishTime = Math.max(1, Math.floor((performance.now() - levelStartTimeRef.current) / 1000));
+          levelTimesRef.current = [...levelTimesRef.current, finishTime];
+          setLevelTimes([...levelTimesRef.current]);
+
+          // Time bonus: 3000 pts for finishing in ≤10s, scaling down to 0 at 60s
+          const timeBonus = Math.max(0, Math.round(3000 * Math.max(0, (60 - finishTime) / 50)));
+          if (timeBonus > 0) {
+            scoreRef.current += timeBonus;
+            setScore(scoreRef.current);
+          }
+
           if (levelRef.current >= LEVELS.length - 1) {
             // Game complete!
             playFanfare();
@@ -568,6 +602,8 @@ export function useGameEngine() {
     ghostsCaught,
     ghostsNeeded,
     rocketProgress,
+    levelElapsed,
+    levelTimes,
     mazeRef,
     pacmanRef,
     pacmanDirRef,

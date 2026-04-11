@@ -22,6 +22,8 @@ export default function Home() {
     ghostsCaught,
     ghostsNeeded,
     rocketProgress,
+    levelElapsed,
+    levelTimes,
     mazeRef,
     pacmanRef,
     pacmanDirRef,
@@ -287,13 +289,20 @@ export default function Home() {
               </span>
             </div>
 
-            {/* Score */}
+            {/* Score + Timer */}
             <div className="text-center">
               <span
                 className="text-sm sm:text-base"
                 style={{ fontFamily: PIXEL_FONT, color: '#FFFF00' }}
               >
                 {score.toString().padStart(6, '0')}
+              </span>
+              <br />
+              <span
+                className="text-[8px] sm:text-[9px]"
+                style={{ fontFamily: PIXEL_FONT, color: '#00FF88' }}
+              >
+                {String(Math.floor(levelElapsed / 60)).padStart(2, '0')}:{String(levelElapsed % 60).padStart(2, '0')}
               </span>
             </div>
 
@@ -398,7 +407,7 @@ export default function Home() {
 
       {/* ===== LEVEL COMPLETE ===== */}
       {gameState === 'levelComplete' && (
-        <div className="flex flex-col items-center gap-4 sm:gap-6 p-4 max-w-md mx-auto">
+        <div className="flex flex-col items-center gap-3 sm:gap-5 p-4 max-w-md mx-auto">
           <h2
             className="text-lg sm:text-2xl text-center"
             style={{ fontFamily: PIXEL_FONT, color: levelDef.wallStroke, textShadow: `0 0 15px ${levelDef.wallStroke}` }}
@@ -411,6 +420,17 @@ export default function Home() {
           >
             {score.toString().padStart(6, '0')}
           </div>
+          {/* Time for this level */}
+          {levelTimes.length > 0 && (
+            <div className="text-center">
+              <p style={{ fontFamily: PIXEL_FONT, color: '#00FF88', fontSize: 'clamp(9px, 2.5vw, 12px)' }}>
+                TIME: {String(Math.floor(levelTimes[levelTimes.length - 1] / 60)).padStart(2,'0')}:{String(levelTimes[levelTimes.length - 1] % 60).padStart(2,'0')}
+              </p>
+              {levelTimes[levelTimes.length - 1] <= 10 && (
+                <p style={{ fontFamily: PIXEL_FONT, color: '#FFD700', fontSize: 'clamp(7px, 2vw, 9px)', marginTop: '4px' }}>SPEED BONUS! ⚡</p>
+              )}
+            </div>
+          )}
           <p
             className="text-[10px] sm:text-xs text-center"
             style={{ fontFamily: PIXEL_FONT, color: '#FFFFFF' }}
@@ -564,8 +584,54 @@ export default function Home() {
               </p>
             </div>
 
+            {/* Level times breakdown */}
+            {levelTimes.length > 0 && (
+              <div className="w-full" style={{ borderTop: '1px solid rgba(255,215,0,0.2)', paddingTop: '8px' }}>
+                {levelTimes.map((t, i) => (
+                  <div key={i} className="flex justify-between items-center" style={{ marginBottom: '3px' }}>
+                    <span style={{ fontFamily: PIXEL_FONT, color: LEVELS[i]?.wallStroke || '#FFFFFF', fontSize: 'clamp(6px, 1.6vw, 8px)' }}>
+                      {LEVELS[i]?.label.toUpperCase() || `LV${i+1}`}
+                    </span>
+                    <span style={{ fontFamily: PIXEL_FONT, color: '#00FF88', fontSize: 'clamp(6px, 1.6vw, 8px)' }}>
+                      {String(Math.floor(t / 60)).padStart(2,'0')}:{String(t % 60).padStart(2,'0')}
+                      {t <= 10 ? ' ⚡' : ''}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
             {/* Divider */}
             <div style={{ width: '100%', height: '2px', backgroundColor: '#FFD700', opacity: 0.4 }} />
+
+            {/* Share button */}
+            <button
+              onClick={() => {
+                const totalTime = levelTimes.reduce((a, b) => a + b, 0);
+                const mm = String(Math.floor(totalTime / 60)).padStart(2,'0');
+                const ss = String(totalTime % 60).padStart(2,'0');
+                const timesStr = levelTimes.map((t, i) =>
+                  `${LEVELS[i]?.label || `Lv${i+1}`}: ${String(Math.floor(t/60)).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`
+                ).join(' | ');
+                const text = `🎮 Ghost Catcher 2026\n👻 Score: ${score.toString().padStart(6,'0')}\n⏱ Total time: ${mm}:${ss}\n${timesStr}\n🕹 Play at https://faisalmushtaq.github.io/ghostcatcher2026/`;
+                if (navigator.share) {
+                  navigator.share({ title: 'Ghost Catcher 2026', text });
+                } else {
+                  navigator.clipboard.writeText(text).then(() => alert('Score copied to clipboard!'));
+                }
+              }}
+              className="w-full py-3 tracking-wider transition-all duration-200 hover:scale-105 active:scale-95"
+              style={{
+                fontFamily: PIXEL_FONT,
+                color: '#00FFFF',
+                backgroundColor: 'transparent',
+                border: '3px solid #00FFFF',
+                fontSize: 'clamp(9px, 2.5vw, 12px)',
+                cursor: 'pointer',
+              }}
+            >
+              📤 SHARE SCORE
+            </button>
 
             {/* Play Again button */}
             <button
@@ -584,21 +650,26 @@ export default function Home() {
               PLAY AGAIN
             </button>
 
-            {/* Back to menu */}
-            <button
-              onClick={() => setGameState('menu')}
-              style={{
-                fontFamily: PIXEL_FONT,
-                color: '#6666FF',
-                background: 'none',
-                border: 'none',
-                fontSize: 'clamp(7px, 2vw, 10px)',
-                textDecoration: 'underline',
-                cursor: 'pointer',
-              }}
-            >
-              BACK TO MENU
-            </button>
+            {/* Mushtaq Arcade Corp + Back to menu */}
+            <div className="flex flex-col items-center gap-1">
+              <button
+                onClick={() => setGameState('menu')}
+                style={{
+                  fontFamily: PIXEL_FONT,
+                  color: '#6666FF',
+                  background: 'none',
+                  border: 'none',
+                  fontSize: 'clamp(7px, 2vw, 10px)',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                }}
+              >
+                BACK TO MENU
+              </button>
+              <p style={{ fontFamily: PIXEL_FONT, color: '#333333', fontSize: 'clamp(5px, 1.4vw, 7px)', marginTop: '4px' }}>
+                © 2019-2026 MUSHTAQ ARCADE CORP
+              </p>
+            </div>
           </div>
         </div>
       )}
