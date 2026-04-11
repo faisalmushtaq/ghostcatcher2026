@@ -51,8 +51,8 @@ export const LEVELS: LevelDef[] = [
   // ---- LEVEL 1: Nice and easy ----
   {
     level: 1,
-    ghostCount: 5,            // catch 5 ghosts
-    ghostSpeed: 0.3,          // ghosts move at 30% of your speed (very catchable)
+    ghostCount: 1,            // catch 1 ghost to just get used to the game
+    ghostSpeed: 0.2,          // ghosts move at 20% of your speed (very catchable)
     ghostSpawnInterval: 80,   // new ghost every 80 ticks (relaxed)
     bgColor: '#000000',       // black background
     wallColor: '#2121DE',     // blue walls
@@ -63,7 +63,7 @@ export const LEVELS: LevelDef[] = [
   // ---- LEVEL 2: A bit faster ----
   {
     level: 2,
-    ghostCount: 10,           // catch 10 ghosts
+    ghostCount: 3,           // catch 3 ghosts
     ghostSpeed: 0.42,         // ghosts move at 42% of your speed
     ghostSpawnInterval: 65,   // new ghost every 65 ticks
     bgColor: '#0A0A1A',      // very dark blue background
@@ -75,7 +75,7 @@ export const LEVELS: LevelDef[] = [
   // ---- LEVEL 3: Getting tricky ----
   {
     level: 3,
-    ghostCount: 10,           // catch 10 ghosts
+    ghostCount: 5,           // catch 5 ghosts
     ghostSpeed: 0.55,         // ghosts move at 55% of your speed
     ghostSpawnInterval: 50,   // new ghost every 50 ticks
     bgColor: '#1A0A0A',      // very dark red background
@@ -87,7 +87,7 @@ export const LEVELS: LevelDef[] = [
   // ---- LEVEL 4 (FINAL): Fast ghosts! ----
   {
     level: 4,
-    ghostCount: 8,            // catch 8 ghosts
+    ghostCount: 10,            // catch 10 ghosts
     ghostSpeed: 0.7,          // ghosts move at 70% of your speed (challenging!)
     ghostSpawnInterval: 40,   // new ghost every 40 ticks
     bgColor: '#1A0A1A',      // very dark purple background
