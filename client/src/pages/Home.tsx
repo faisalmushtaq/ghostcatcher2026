@@ -424,9 +424,9 @@ export default function Home() {
 
       {/* ===== VICTORY SCREEN ===== */}
       {gameState === 'victory' && (
-        <div className="flex flex-col items-center gap-3 sm:gap-5 p-4 max-w-md mx-auto relative">
-          {/* Confetti canvas overlay */}
-          <div className="fixed inset-0 pointer-events-none z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50" style={{ backgroundColor: 'rgba(0,0,0,0.92)' }}>
+          {/* Confetti canvas - full screen behind popup */}
+          <div className="fixed inset-0 pointer-events-none z-40">
             <GameCanvas
               mazeRef={mazeRef}
               pacmanRef={pacmanRef}
@@ -442,56 +442,93 @@ export default function Home() {
             />
           </div>
 
-          <img
-            src={ASSETS.victory}
-            alt="Champion!"
-            className="w-full max-w-[260px] rounded-lg z-10"
-            style={{ border: '3px solid #FFD700' }}
-          />
-          <h2
-            className="text-xl sm:text-3xl text-center z-10"
+          {/* Popup box */}
+          <div
+            className="relative z-50 flex flex-col items-center gap-4 sm:gap-6 p-6 sm:p-10 mx-4"
             style={{
-              fontFamily: PIXEL_FONT,
-              color: '#FFD700',
-              textShadow: '0 0 20px rgba(255,215,0,0.6)',
+              backgroundColor: '#000000',
+              border: '4px solid #FFD700',
+              boxShadow: '0 0 60px rgba(255,215,0,0.5), inset 0 0 30px rgba(255,215,0,0.05)',
+              maxWidth: '420px',
+              width: '100%',
             }}
           >
-            CHAMPION!
-          </h2>
-          <div className="text-center z-10">
-            <p
-              className="text-lg sm:text-2xl"
-              style={{ fontFamily: PIXEL_FONT, color: '#FFFF00' }}
+            {/* Trophy emoji row */}
+            <div style={{ fontSize: 'clamp(32px, 10vw, 56px)' }}>🏆</div>
+
+            {/* Main message */}
+            <h2
+              className="text-center leading-snug animate-pulse"
+              style={{
+                fontFamily: PIXEL_FONT,
+                color: '#FFD700',
+                fontSize: 'clamp(14px, 4vw, 24px)',
+                textShadow: '0 0 20px rgba(255,215,0,0.8), 3px 3px 0px #8B6914',
+              }}
             >
-              {score.toString().padStart(6, '0')}
-            </p>
-            <p
-              className="text-[9px] sm:text-[10px] mt-2"
-              style={{ fontFamily: PIXEL_FONT, color: '#FFFFFF' }}
+              YOU CAUGHT<br />ALL THE GHOSTS!
+            </h2>
+
+            {/* Score */}
+            <div className="text-center">
+              <p
+                style={{
+                  fontFamily: PIXEL_FONT,
+                  color: '#FFFFFF',
+                  fontSize: 'clamp(8px, 2vw, 11px)',
+                  marginBottom: '6px',
+                }}
+              >
+                FINAL SCORE
+              </p>
+              <p
+                style={{
+                  fontFamily: PIXEL_FONT,
+                  color: '#FFFF00',
+                  fontSize: 'clamp(20px, 6vw, 36px)',
+                  textShadow: '0 0 15px rgba(255,255,0,0.6)',
+                }}
+              >
+                {score.toString().padStart(6, '0')}
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div style={{ width: '100%', height: '2px', backgroundColor: '#FFD700', opacity: 0.4 }} />
+
+            {/* Play Again button */}
+            <button
+              onClick={startGame}
+              className="w-full py-3 sm:py-4 tracking-wider transition-all duration-200 hover:scale-105 active:scale-95"
+              style={{
+                fontFamily: PIXEL_FONT,
+                color: '#000000',
+                backgroundColor: '#FFD700',
+                border: 'none',
+                fontSize: 'clamp(10px, 3vw, 14px)',
+                textShadow: 'none',
+                cursor: 'pointer',
+              }}
             >
-              ALL GHOSTS CAUGHT!
-            </p>
+              PLAY AGAIN
+            </button>
+
+            {/* Back to menu */}
+            <button
+              onClick={() => setGameState('menu')}
+              style={{
+                fontFamily: PIXEL_FONT,
+                color: '#6666FF',
+                background: 'none',
+                border: 'none',
+                fontSize: 'clamp(7px, 2vw, 10px)',
+                textDecoration: 'underline',
+                cursor: 'pointer',
+              }}
+            >
+              BACK TO MENU
+            </button>
           </div>
-          <button
-            onClick={startGame}
-            className="px-8 py-3 text-xs sm:text-sm tracking-wider transition-all hover:scale-105 active:scale-95 z-10"
-            style={{
-              fontFamily: PIXEL_FONT,
-              color: '#00FF00',
-              border: '3px solid #00FF00',
-              backgroundColor: 'rgba(0,0,0,0.8)',
-              textShadow: '0 0 10px rgba(0,255,0,0.5)',
-            }}
-          >
-            PLAY AGAIN
-          </button>
-          <button
-            onClick={() => setGameState('menu')}
-            className="text-[9px] sm:text-[10px] z-10 transition-colors"
-            style={{ fontFamily: PIXEL_FONT, color: '#6666FF', textDecoration: 'underline' }}
-          >
-            BACK TO MENU
-          </button>
         </div>
       )}
     </div>

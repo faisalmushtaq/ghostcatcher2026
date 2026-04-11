@@ -87,7 +87,7 @@ export const LEVELS: LevelDef[] = [
   // ---- LEVEL 4 (FINAL): Fast ghosts! ----
   {
     level: 4,
-    ghostCount: 10,            // catch 10 ghosts
+    ghostCount: 5,             // catch 5 ghosts
     ghostSpeed: 0.7,          // ghosts move at 70% of your speed (challenging!)
     ghostSpawnInterval: 40,   // new ghost every 40 ticks
     bgColor: '#1A0A1A',      // very dark purple background
