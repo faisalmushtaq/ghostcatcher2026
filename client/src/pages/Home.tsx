@@ -39,6 +39,7 @@ export default function Home() {
 
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [showDpad, setShowDpad] = useState(false);
+  const [menuMode, setMenuMode] = useState<'home' | 'levelSelect'>('home');
 
   useEffect(() => {
     const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -125,18 +126,15 @@ export default function Home() {
     >
       {/* ===== MENU SCREEN ===== */}
       {gameState === 'menu' && (
-        <div
-          className="flex flex-col items-center justify-center w-full min-h-[100dvh] p-4"
-          onClick={startGame}
-          style={{ cursor: 'pointer' }}
-        >
+        <div className="flex flex-col items-center justify-center w-full min-h-[100dvh] p-4 sm:p-6">
+
           {/* Title */}
           <h1
-            className="text-center mb-4 leading-tight"
+            className="text-center mb-3 leading-tight"
             style={{
               fontFamily: PIXEL_FONT,
               color: '#FFFF00',
-              fontSize: 'clamp(18px, 5vw, 36px)',
+              fontSize: 'clamp(16px, 4.5vw, 32px)',
               textShadow: '0 0 20px rgba(255,255,0,0.7), 3px 3px 0px #B8860B',
               letterSpacing: '0.05em',
             }}
@@ -145,47 +143,120 @@ export default function Home() {
             <span style={{ color: '#00FFFF', textShadow: '0 0 20px rgba(0,255,255,0.7), 3px 3px 0px #006666' }}>2026</span>
           </h1>
 
-          {/* Large splash image */}
+          {/* Splash image */}
           <img
             src={ASSETS.splash}
-            alt="Ghost Catcher 2026 - Pac-Man chasing ghosts"
-            className="w-full"
+            alt="Ghost Catcher 2026"
+            className="w-full mb-4"
             style={{
-              maxWidth: 'min(480px, 90vw)',
+              maxWidth: 'min(400px, 88vw)',
               imageRendering: 'pixelated',
               border: '4px solid #2121DE',
               boxShadow: '0 0 30px rgba(33,33,222,0.6)',
             }}
           />
 
-          {/* TAP TO START - blinking */}
-          <p
-            className="mt-6 animate-pulse"
-            style={{
-              fontFamily: PIXEL_FONT,
-              color: '#FFFFFF',
-              fontSize: 'clamp(10px, 3vw, 16px)',
-              letterSpacing: '0.1em',
-            }}
-          >
-            TAP TO START
-          </p>
+          {/* ---- HOME: two mode buttons ---- */}
+          {menuMode === 'home' && (
+            <div className="flex flex-col items-center gap-3 w-full" style={{ maxWidth: 'min(360px, 88vw)' }}>
+              {/* ARCADE */}
+              <button
+                onClick={() => { setMenuMode('home'); startGame(0); }}
+                className="w-full py-3 sm:py-4 tracking-wider transition-all duration-150 hover:scale-105 active:scale-95"
+                style={{
+                  fontFamily: PIXEL_FONT,
+                  fontSize: 'clamp(11px, 3vw, 15px)',
+                  color: '#000000',
+                  backgroundColor: '#FFFF00',
+                  border: '3px solid #FFFF00',
+                  cursor: 'pointer',
+                }}
+              >
+                ARCADE
+              </button>
+              <p
+                className="text-center"
+                style={{ fontFamily: PIXEL_FONT, color: '#888888', fontSize: 'clamp(6px, 1.5vw, 8px)', marginTop: '-4px' }}
+              >
+                ALL 4 LEVELS IN ORDER
+              </p>
 
-          {/* Controls hint */}
-          <p
-            className="mt-3 text-center"
-            style={{
-              fontFamily: PIXEL_FONT,
-              color: '#6666FF',
-              fontSize: 'clamp(7px, 1.8vw, 10px)',
-              maxWidth: '300px',
-              lineHeight: '1.8',
-            }}
-          >
-            {isTouchDevice
-              ? 'TAP THE MAZE OR USE D-PAD TO CATCH GHOSTS!'
-              : 'ARROW KEYS OR WASD TO CATCH GHOSTS!'}
-          </p>
+              {/* LEVEL SELECT */}
+              <button
+                onClick={() => setMenuMode('levelSelect')}
+                className="w-full py-3 sm:py-4 tracking-wider transition-all duration-150 hover:scale-105 active:scale-95"
+                style={{
+                  fontFamily: PIXEL_FONT,
+                  fontSize: 'clamp(11px, 3vw, 15px)',
+                  color: '#00FFFF',
+                  backgroundColor: 'transparent',
+                  border: '3px solid #00FFFF',
+                  cursor: 'pointer',
+                }}
+              >
+                LEVEL SELECT
+              </button>
+              <p
+                className="text-center"
+                style={{ fontFamily: PIXEL_FONT, color: '#888888', fontSize: 'clamp(6px, 1.5vw, 8px)', marginTop: '-4px' }}
+              >
+                JUMP TO ANY LEVEL
+              </p>
+
+              {/* Controls hint */}
+              <p
+                className="mt-2 text-center"
+                style={{
+                  fontFamily: PIXEL_FONT,
+                  color: '#6666FF',
+                  fontSize: 'clamp(6px, 1.6vw, 9px)',
+                  maxWidth: '300px',
+                  lineHeight: '1.8',
+                }}
+              >
+                {isTouchDevice ? 'TAP MAZE OR D-PAD TO MOVE' : 'ARROW KEYS OR WASD TO MOVE'}
+              </p>
+            </div>
+          )}
+
+          {/* ---- LEVEL SELECT: 4 level buttons ---- */}
+          {menuMode === 'levelSelect' && (
+            <div className="flex flex-col items-center gap-3 w-full" style={{ maxWidth: 'min(360px, 88vw)' }}>
+              {LEVELS.map((lvl, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => { setMenuMode('home'); startGame(idx); }}
+                  className="w-full py-3 tracking-wider transition-all duration-150 hover:scale-105 active:scale-95"
+                  style={{
+                    fontFamily: PIXEL_FONT,
+                    fontSize: 'clamp(10px, 2.5vw, 13px)',
+                    color: lvl.wallStroke,
+                    backgroundColor: 'transparent',
+                    border: `3px solid ${lvl.wallColor}`,
+                    textShadow: `0 0 8px ${lvl.wallStroke}`,
+                    cursor: 'pointer',
+                  }}
+                >
+                  LV{lvl.level}: {lvl.label.toUpperCase()}
+                </button>
+              ))}
+              <button
+                onClick={() => setMenuMode('home')}
+                style={{
+                  fontFamily: PIXEL_FONT,
+                  color: '#666666',
+                  background: 'none',
+                  border: 'none',
+                  fontSize: 'clamp(7px, 1.8vw, 9px)',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  marginTop: '4px',
+                }}
+              >
+                BACK
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -498,7 +569,7 @@ export default function Home() {
 
             {/* Play Again button */}
             <button
-              onClick={startGame}
+              onClick={() => startGame(0)}
               className="w-full py-3 sm:py-4 tracking-wider transition-all duration-200 hover:scale-105 active:scale-95"
               style={{
                 fontFamily: PIXEL_FONT,

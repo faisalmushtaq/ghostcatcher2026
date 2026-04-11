@@ -57,7 +57,7 @@ export const LEVELS: LevelDef[] = [
     bgColor: '#000000',       // black background
     wallColor: '#2121DE',     // blue walls
     wallStroke: '#3333FF',    // light blue highlights
-    label: 'Level 1',
+    label: 'Beginner',
   },
 
   // ---- LEVEL 2: A bit faster ----
@@ -69,7 +69,7 @@ export const LEVELS: LevelDef[] = [
     bgColor: '#0A0A1A',      // very dark blue background
     wallColor: '#21DE21',     // green walls
     wallStroke: '#33FF33',    // light green highlights
-    label: 'Level 2',
+    label: 'Intermediate',
   },
 
   // ---- LEVEL 3: Getting tricky ----
@@ -81,7 +81,7 @@ export const LEVELS: LevelDef[] = [
     bgColor: '#1A0A0A',      // very dark red background
     wallColor: '#DE2121',     // red walls
     wallStroke: '#FF3333',    // light red highlights
-    label: 'Level 3',
+    label: 'Expert',
   },
 
   // ---- LEVEL 4 (FINAL): Fast ghosts! ----
@@ -93,7 +93,7 @@ export const LEVELS: LevelDef[] = [
     bgColor: '#1A0A1A',      // very dark purple background
     wallColor: '#DE21DE',     // magenta walls
     wallStroke: '#FF33FF',    // light magenta highlights
-    label: 'Final Level',
+    label: 'Genius',
   },
 ];
 

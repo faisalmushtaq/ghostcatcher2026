@@ -150,11 +150,11 @@ export function useGameEngine() {
     setGameState('playing');
   }, [initMaze, spawnGhost]);
 
-  const startGame = useCallback(() => {
+  const startGame = useCallback((startLevelIndex: number = 0) => {
     scoreRef.current = 0;
     setScore(0);
     ghostIdCounter = 0;
-    startLevel(0);
+    startLevel(startLevelIndex);
   }, [startLevel]);
 
   // ---- Movement helpers ----
